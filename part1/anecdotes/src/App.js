@@ -10,6 +10,27 @@ const anecdotes = [
   "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
   "Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients",
 ];
+const Winner = ({ anecdotes, allvote }) => {
+  const highestVoteCount = Math.max(...allvote);
+  const winnerIndex = allvote.indexOf(highestVoteCount);
+  const winner = anecdotes[winnerIndex];
+  if (highestVoteCount === 0) {
+    return <p> no vote yet</p>;
+  }
+  return (
+    <div>
+      <p>{winner}</p>
+      <p>has {highestVoteCount} votes</p>
+    </div>
+  );
+};
+
+const Header = ({ text }) => {
+  return <h1>{text}</h1>;
+};
+const Button = ({ onclick, text }) => {
+  return <button onClick={onclick}>{text}</button>;
+};
 
 function App() {
   const [selected, setSelected] = useState(0);
@@ -22,13 +43,17 @@ function App() {
     copy[selected] += 1;
     setAllvote(copy);
   };
-
+  const maxVote = Math.max();
   return (
     <div className="container">
+      <Header text="Anecdote of the day" />
+
       <p>{anecdotes[selected]}</p>
       <p>has {allvote[selected]} votes</p>
-      <button onClick={handleVoteClick}>vote</button>
-      <button onClick={randomSelect}>next anecdotes</button>
+      <Button onclick={handleVoteClick} text="vote" />
+      <Button onclick={randomSelect} text="next anecdotes" />
+      <Header text="Anecdote with most votes" />
+      <Winner anecdotes={anecdotes} allvote={allvote} />
     </div>
   );
 }
