@@ -3,9 +3,6 @@ import Header from "./Header";
 import Content from "./Content";
 
 function Course({ course }) {
-  const cal = course[0].parts;
-  const total = cal.reduce((acc, cur) => acc + cur.exercises, 0);
-
   return (
     <>
       <Header
