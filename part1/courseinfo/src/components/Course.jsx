@@ -1,17 +1,22 @@
 import React from "react";
 import Header from "./Header";
 import Content from "./Content";
-import Total from "./Total";
 
-function Course(props) {
-  const { name, parts } = props.course;
-  const total = parts.reduce((acc, cur) => acc + cur.exercises, 0);
+function Course({ course }) {
+  const cal = course[0].parts;
+  const total = cal.reduce((acc, cur) => acc + cur.exercises, 0);
 
   return (
     <>
-      <Header name={name} />
-      <Content part={parts} />
-      <Total total={total} />
+      <Header
+        name={course[0]}
+        text={course[0].name}
+        heading="Web development curriculum"
+      />
+      <Content part={course[0].parts} />
+
+      <Header text={course[1].name} />
+      <Content part={course[1].parts} />
     </>
   );
 }

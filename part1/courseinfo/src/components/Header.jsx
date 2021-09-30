@@ -1,8 +1,14 @@
 import React from "react";
 
-const Header = (props) => {
-  const { name } = props;
-  return <h1>{name}</h1>;
-};
+function Header(props) {
+  const { text, heading } = props;
+
+  return (
+    <>
+      <h1>{heading}</h1>
+      <h3>{text}</h3>
+    </>
+  );
+}
 
 export default Header;

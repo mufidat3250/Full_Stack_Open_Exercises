@@ -1,9 +1,11 @@
 import React from "react";
 import Part from "./Part";
 
-function Content({ part }) {
+function Content(props) {
+  const { part } = props;
+  const { name, exercises, id } = part;
   return (
-    <div>
+    <div key={id}>
       <div>
         {part.map((part) => {
           const { name, exercises, id } = part;
@@ -15,6 +17,9 @@ function Content({ part }) {
           );
         })}
       </div>
+      <h4>
+        Total of {part.reduce((acc, cur) => acc + cur.exercises, 0)} exercises
+      </h4>
     </div>
   );
 }
