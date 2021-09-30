@@ -1,9 +1,11 @@
 import React from "react";
 
 const Part = (props) => {
+  const { name, exercises, id } = props.parts;
+
   return (
-    <p>
-      {props.part_} {props.exercise_}
+    <p key={id}>
+      {name} {exercises}
     </p>
   );
 };
