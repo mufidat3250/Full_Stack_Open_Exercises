@@ -4,9 +4,11 @@ const Part = (props) => {
   const { name, exercises, id } = props.parts;
 
   return (
-    <p key={id}>
-      {name} {exercises}
-    </p>
+    <>
+      <p>
+        {name} {exercises}
+      </p>
+    </>
   );
 };
 
