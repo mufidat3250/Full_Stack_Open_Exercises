@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import Note from "./components/Note";
+import SearchFilter from "./components/SearchFilter";
+import PersonForm from "./components/PersonForm";
+import Person from "./components/Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -8,15 +10,9 @@ const App = () => {
     { name: "Dan Abramov", number: "12-43-234345", id: 3 },
     { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
   ]);
-  console.log(persons.length);
   const [newName, setNewName] = useState("mufidat");
   const [newNumber, setNewNumber] = useState("");
-  const [quary, setQuary] = useState("");
-
-  console.log(quary);
-  const inputValue = (e) => {
-    setNewName(e.target.value);
-  };
+  const [query, setQuary] = useState("");
 
   const addName = (e) => {
     e.preventDefault();
@@ -36,38 +32,34 @@ const App = () => {
     setNewNumber("");
   };
 
-  const numberValue = (event) => {
-    setNewNumber(event.target.value);
-  };
-
   const search = (event) => {
     setQuary(event.target.value);
   };
-
-  const displaySearch = persons.filter((person) =>
-    person.name.toLowerCase().includes(quary)
-  );
+  const numberValue = (event) => {
+    setNewNumber(event.target.value);
+  };
+  const inputValue = (e) => {
+    setNewName(e.target.value);
+  };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      filter shown with <input value={quary} onChange={search} />
+      <SearchFilter value={query} onchange={search} />
       <h3>add a new</h3>
-      <form onSubmit={addName}>
-        <div className="inputField">
-          name: <input value={newName} onChange={inputValue} /> <br />
-          number: <input value={newNumber} onChange={numberValue} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+
+      <PersonForm
+        // declearations
+        onsubmit={addName}
+        newName={newName}
+        newNumber={newNumber}
+        input1={inputValue}
+        input2={numberValue}
+      />
+
       <h2>Numbers</h2>
-      <ul>
-        {displaySearch.map((person) => {
-          return <Note person={person} key={person.id} />;
-        })}
-      </ul>
+
+      <Person person_s={persons} query_={query} />
     </div>
   );
 };
