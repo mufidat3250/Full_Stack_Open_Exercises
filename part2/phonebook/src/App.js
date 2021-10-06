@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SearchFilter from "./components/SearchFilter";
 import PersonForm from "./components/PersonForm";
 import Person from "./components/Persons";
+import axios from "axios";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -41,6 +42,20 @@ const App = () => {
   const inputValue = (e) => {
     setNewName(e.target.value);
   };
+  axios
+    .get("http://localhost:3001/notes")
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  const promise = axios.get("http://localhost:3001/notes");
+
+  promise.then((response) => {
+    console.log(response);
+  });
 
   return (
     <div>
