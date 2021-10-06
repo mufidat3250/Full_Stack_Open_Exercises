@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchFilter from "./components/SearchFilter";
 import PersonForm from "./components/PersonForm";
 import Person from "./components/Persons";
@@ -14,6 +14,7 @@ const App = () => {
   const [newName, setNewName] = useState("mufidat");
   const [newNumber, setNewNumber] = useState("");
   const [query, setQuary] = useState("");
+  const [person, setPerson] = useState([]);
 
   const addName = (e) => {
     e.preventDefault();
@@ -42,20 +43,18 @@ const App = () => {
   const inputValue = (e) => {
     setNewName(e.target.value);
   };
-  axios
-    .get("http://localhost:3001/notes")
-    .then((res) => {
-      console.log(res.data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  const promise = axios.get("http://localhost:3001/notes");
-
-  promise.then((response) => {
-    console.log(response);
-  });
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/persons")
+      .then((res) => {
+        // console.log(res.data);
+        setPerson(res.data);
+        console.log(person);
+      })
+      .catch((err) => {
+        console.log("Error!!", err);
+      });
+  }, []);
 
   return (
     <div>
