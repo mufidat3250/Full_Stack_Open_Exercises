@@ -36,9 +36,11 @@ function App() {
       />
 
       <div>
-        {showSearch.map(({ name: { official } }, searchIndex) => {
-          return <p>{official}</p>;
-        })}
+        {showSearch.length > 10
+          ? "Too many search specify, with another filter"
+          : showSearch.map(({ name: { official } }, searchIndex) => {
+              return <p>{official}</p>;
+            })}
       </div>
     </div>
   );
