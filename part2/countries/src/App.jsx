@@ -11,7 +11,7 @@ function App() {
       .get("https://restcountries.com/v3.1/all")
       .then((res) => {
         setCountries(res.data);
-        console.log(countries);
+        console.log(res.data);
       })
       .catch((err) => console.log("error message", err));
   }, []);
@@ -21,7 +21,6 @@ function App() {
         const {
           name: { official },
         } = country;
-        console.log(official);
         return official
           .toLowerCase()
           .includes(searchInput.trim().toLowerCase());
@@ -36,11 +35,29 @@ function App() {
       />
 
       <div>
-        {showSearch.length > 10
-          ? "Too many search specify, with another filter"
-          : showSearch.map(({ name: { official } }, searchIndex) => {
-              return <p>{official}</p>;
-            })}
+        {showSearch.length === 1 ? (
+          showSearch.map(
+            (
+              { name: { official }, capital: [capital], population },
+              searchIndex
+            ) => {
+              console.log(population);
+              return (
+                <div>
+                  <p>{official}</p>
+                  <p>Capital: {capital}</p>
+                  <p>Population: {population}</p>
+                </div>
+              );
+            }
+          )
+        ) : showSearch.length > 10 ? (
+          <p> Too many search specify, with another filter</p>
+        ) : (
+          showSearch.map(({ name: { official } }) => {
+            return <p>{official}</p>;
+          })
+        )}
       </div>
     </div>
   );
