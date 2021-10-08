@@ -38,15 +38,25 @@ function App() {
         {showSearch.length === 1 ? (
           showSearch.map(
             (
-              { name: { official }, capital: [capital], population },
+              {
+                name: { official },
+                capital: [capital],
+                population,
+                flags: { png },
+              },
               searchIndex
             ) => {
-              console.log(population);
+              console.log(official);
               return (
                 <div>
-                  <p>{official}</p>
-                  <p>Capital: {capital}</p>
-                  <p>Population: {population}</p>
+                  <h1>{official}</h1>
+                  <div>
+                    <h1>language</h1>
+                    <p>Capital: {capital}</p>
+                    <p>Population: {population}</p>
+                    {console.log(png)}
+                    <img src={png} alt="flag" />
+                  </div>
                 </div>
               );
             }
