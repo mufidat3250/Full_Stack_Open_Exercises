@@ -51,9 +51,24 @@ function App() {
                 <div>
                   <h1>{official}</h1>
                   <div>
-                    <h1>language</h1>
                     <p>Capital: {capital}</p>
                     <p>Population: {population}</p>
+                    <div>
+                      <h1>language</h1>
+                      <ul>
+                        {showSearch.map((lang) => {
+                          const languageArray = Object.values(lang.languages);
+
+                          for (let i = 0; i < languageArray.length; i++) {
+                            console.log(i);
+                            return <li>{languageArray[i]}</li>;
+                          }
+
+                          console.log(languageArray);
+                        })}
+                      </ul>
+                    </div>
+
                     {console.log(png)}
                     <img src={png} alt="flag" />
                   </div>
