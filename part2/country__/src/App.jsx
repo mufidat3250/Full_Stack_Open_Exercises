@@ -15,8 +15,6 @@ const App = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const showData = () => {};
-
   //checking the output from the inputField
   const showcountries = query
     ? countries.filter((country) =>
@@ -47,7 +45,6 @@ const App = () => {
         return (
           <div key={country.flag}>
             <span>{country.name.common}</span> {"  "}
-            <button onClick={showData}>show</button>
           </div>
         );
       })
