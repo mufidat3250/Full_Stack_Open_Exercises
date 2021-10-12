@@ -1,60 +1,34 @@
 import React from "react";
+import axios from "axios";
+import Search from "./components/SearchField";
 import { useState, useEffect } from "react";
-// import {}
 
 const App = () => {
   const [countries, setCountries] = useState([]);
-  const [query, setQuery] = useState("");
-  const url = "https://restcountries.com/v3.1/all";
-  console.log(countries);
-
+  const [query, setQuery] = useState(" ");
   useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((json) => setCountries(json))
+    axios
+      .get("https://restcountries.com/v3.1/all")
+      .then(({ data }) => setCountries(data))
       .catch((err) => console.log(err));
   }, []);
+  // console.log(countries);
 
-  //checking the output from the inputField
-  const showcountries = query
-    ? countries.filter((country) =>
-        country.name.common.toLowerCase().includes(query.toLowerCase())
-      )
-    : countries;
-
-  const users_ =
-    showcountries.length === 1 ? (
-      <div>
-        <h1>{showcountries[0].name.common}</h1>
-        <p>capital: {showcountries[0].capital}</p>
-        <p>Population: {showcountries[0].population}</p>
-        <h2>Language</h2>
-        <ul>
-          {Object.values(showcountries[0].languages).map(
-            (language, langIndex) => {
-              return <li key={langIndex}>{language}</li>;
-            }
-          )}
-        </ul>
-        <img src={showcountries[0].flags.png} alt="" />
-      </div>
-    ) : showcountries.length > 10 ? (
-      <p>Too many countries, specify another filter</p>
-    ) : (
-      showcountries.map((country) => {
-        return (
-          <div key={country.flag}>
-            <span>{country.name.common}</span> {"  "}
-          </div>
-        );
+  const displaySearch = query
+    ? countries.filter((country) => {
+        return country.name.common.toLowerCase().includes(query.toLowerCase());
       })
-    );
+    : countries;
+  // console.log(displaySearch);
+  const users = displaySearch.map((search) => {
+    return console.log(search.length);
+  });
+  console.log(displaySearch);
 
   return (
-    <div>
-      <span>Find Countries</span>
-      <input value={query} onChange={(e) => setQuery(e.target.value.trim())} />
-      {users_}
+    <div className=" App">
+      <Search value={query} onChange={(e) => setQuery(e.target.value.trim())} />
+      {users}
     </div>
   );
 };
