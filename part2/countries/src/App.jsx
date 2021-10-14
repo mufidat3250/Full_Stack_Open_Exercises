@@ -48,6 +48,7 @@ function App() {
   };
   {
     console.log(weatherData);
+    console.log(weatherData);
   }
 
   useEffect(() => {
