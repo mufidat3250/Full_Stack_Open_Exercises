@@ -10,8 +10,6 @@ function App() {
   const [show, setShow] = useState(false);
   const [data, setData] = useState({});
 
-  console.log(data);
-
   useEffect(() => {
     axios
       .get("https://restcountries.com/v3.1/all")
