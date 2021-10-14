@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Search from "./components/Search";
-// import Countries from "./components/Countries";
-// import Button from "./components/Button";
+import Show from "./components/Show";
+
 function App() {
   const [countries, setCountries] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [weatherData, setWeatherData] = useState({});
-  // console.log({ result: Object.keys(weatherData) });
+  const [show, setShow] = useState(false);
+  const [data, setData] = useState({});
+
+  console.log(data);
 
   useEffect(() => {
     axios
@@ -27,7 +30,8 @@ function App() {
         return common.toLowerCase().includes(searchInput.trim().toLowerCase());
       })
     : [];
-  console.log(showSearch);
+
+  // console.log(showSearch);
 
   const fetchWeatherData = ({ name: { common } }) => {
     axios
@@ -49,87 +53,10 @@ function App() {
   }
 
   useEffect(() => {
-    console.log("called");
     if (showSearch.length === 1) {
       fetchWeatherData(showSearch[0]);
     }
   }, [searchInput]);
-
-  const handleChange = () => {
-    showSearch.map(
-      (
-        { name: { common }, capital: [capital], population, flags: { png } },
-        searchIndex
-      ) => {
-        console.log(common);
-        return (
-          <div key={searchIndex}>
-            <h1>{common}</h1>
-            <div>
-              {/* {JSON.stringify(weatherData, null, 2)} */}
-              <p>Capital: {capital}</p>
-              <p>Population: {population}</p>
-              <div>
-                <h1>language</h1>
-                <ul>
-                  {showSearch.map((lang, langIndex) => {
-                    const languageArray = Object.values(lang.languages);
-                    for (let i = 0; i < languageArray.length; i++) {
-                      return <li key={langIndex}>{languageArray[i]}</li>;
-                    }
-                    console.log(languageArray);
-                  })}
-                </ul>
-              </div>
-              <img src={png} alt="flag" />
-              {Object.keys(weatherData).length ? (
-                <>
-                  <h1>Weather in {common}</h1>
-                  <h3>Wind {weatherData.wind_degree}</h3>
-                  <h3>Temperature {weatherData.temperature}in Celcius</h3>
-                  <img src={weatherData.weather_icons[0]} alt="weather icon" />
-                </>
-              ) : (
-                []
-              )}
-            </div>
-          </div>
-        );
-      }
-    );
-  };
-
-  // useEffect(() => {
-  //   axios
-  //     .get("http://api.weatherstack.com/current", {
-  //       params: {
-  //         query: "Nigeria",
-  //         access_key: "4f997c9aade55f516d11c4bf124d74a3",
-  //       },
-  //     })
-  //     .then(
-  //       ({
-  //         data: {
-  //           current: { temperature, wind_degree, wind_dir, weather_icons },
-  //         },
-  //       }) => {
-  //         setCountries({
-  //           ...showSearch,
-  //           // temp: temperature,
-  //           // windDegree: wind_degree,
-  //           // windDir: wind_dir,
-  //           // weatherIcons: weather_icons,
-
-  //           temperature,
-  //           wind_degree,
-  //           wind_dir,
-  //           weather_icons,
-  //         });
-  //         console.log({ temperature, wind_degree, wind_dir, weather_icons });
-  //       }
-  //     )
-  //     .catch((err) => console.log(err));
-  // }, []);
 
   const users =
     showSearch.length === 1 ? (
@@ -143,9 +70,8 @@ function App() {
             <div key={searchIndex}>
               <h1>{common}</h1>
               <div>
-                {/* {JSON.stringify(weatherData, null, 2)} */}
                 <p>Capital: {capital}</p>
-                <p>Population: {population}</p>
+                <p>Population:{population}</p>
                 <div>
                   <h1>language</h1>
                   <ul>
@@ -184,11 +110,21 @@ function App() {
     ) : showSearch.length > 10 ? (
       <p> Too many search specify, with another filter</p>
     ) : (
-      showSearch.map(({ name: { common } }) => {
+      showSearch.map((country) => {
         return (
-          <p>
-            {common} <button onChange={() => handleChange()}>show</button>
-          </p>
+          <>
+            <p>
+              {country.name.common}{" "}
+              <button
+                onClick={() => {
+                  setData(country);
+                  setShow(true);
+                }}
+              >
+                show
+              </button>
+            </p>
+          </>
         );
       })
     );
@@ -199,11 +135,10 @@ function App() {
         value={searchInput}
         onchange={(e) => {
           setSearchInput(e.target.value);
+          setShow(false);
         }}
       />
-      {users}
-
-      {/* <Countries showSearch={showSearch} setCountries={setCountries} /> */}
+      {show ? <Show countryData={data} weatherData={weatherData} /> : users}
     </div>
   );
 }
