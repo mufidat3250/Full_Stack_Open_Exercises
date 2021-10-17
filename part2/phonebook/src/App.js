@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import SearchFilter from "./components/SearchFilter";
 import PersonForm from "./components/PersonForm";
 import Person from "./components/Persons";
-import axios from "axios";
+import persons from "./db.json";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -14,7 +14,7 @@ const App = () => {
   const [newName, setNewName] = useState("mufidat");
   const [newNumber, setNewNumber] = useState("");
   const [query, setQuary] = useState("");
-  const [person, setPerson] = useState([]);
+  // const [person, setPerson] = useState([]);
 
   const addName = (e) => {
     e.preventDefault();
@@ -44,16 +44,17 @@ const App = () => {
     setNewName(e.target.value);
   };
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then((res) => {
-        // console.log(res.data);
-        setPerson(res.data);
-        console.log(person);
-      })
-      .catch((err) => {
-        console.log("Error!!", err);
-      });
+    console.log(persons);
+    // axios
+    //   .get("http://localhost:3001/persons")
+    //   .then((res) => {
+    //     // console.log(res.data);
+    //     setPerson(res.data);
+    //     console.log(person);
+    //   })
+    //   .catch((err) => {
+    //     console.log("Error!!", err);
+    //   });
   }, []);
 
   return (
