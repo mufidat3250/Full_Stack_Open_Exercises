@@ -13,52 +13,48 @@ const App = () => {
       .then(({ data }) => setCountries(data))
       .catch((err) => console.log(err));
   }, []);
-
   const fetchWeather = (countryName) => {
     axios
       .get("http://api.weatherstack.com/current", {
         params: {
           query: countryName,
-          access_key: "fe9b66d276959e75982ac2e2c0d82408",
+          access_key: "e9b1a0fd143b2bcd1ba32dd9a8f9b479",
         },
       })
       .then(({ data }) => {
-        console.log(data);
         setCountries(
-          countries.map((search) => {
-            return console.log(search);
-            // if (search.name.common === countryName) {
-            // country = {
-            //   ...search,
-            //   windDir: wind_dir,
-            //   windSpeed: wind_Speed,
-            //   windDegree: wind_degree,
-            //   temperature: temperature,
-            // };
-            // }
+          countries.map((country) => {
+            if (country.name.common === countryName) {
+              country = {
+                ...country,
+                weather: data.current,
+              };
+              console.log(country.weather);
+              return country;
+            }
           })
         );
-      });
-
-    // if (displaySearch.name.common === countryName) {
-    //   country = {
-    //     wind: data.current.wind_degree,
-    //     temperature: data.current.temperature,
-    //     weatherIcon: data.current.weather_icons[0],
-    //     windDir: data.current.wind_dir,
-    //   };
-    // }
+      })
+      .catch((err) => console.log(err));
   };
-  fetchWeather("Nigeria");
-
+  // fetchWeather("Nigeria");
+  console.log(countries);
   const displaySearch = query
     ? countries.filter((country) => {
         return country.name.common.toLowerCase().includes(query.toLowerCase());
       })
     : countries;
-  // console.log(countries);
+
   console.log(displaySearch.length);
   console.log(displaySearch);
+  useEffect(() => {
+    if (displaySearch.length === 1) {
+      const country = displaySearch[0];
+
+      if (country.weather) return;
+      fetchWeather(country.name.common);
+    }
+  }, [query]);
 
   const users =
     displaySearch.length === 1 ? (
@@ -68,31 +64,31 @@ const App = () => {
             <h1>{search.name.common}</h1>
             <p>capital : {search.capital}</p>
             <p>population: {search.population}</p>
+            <p>Temperature: {countriesToShow[0].weather?.temperature}</p>
             <h2>languages</h2>
-            {Object.values(search.languages).map((language, langIndex) => {
+            {Object.values(search[0].languages).map((language, langIndex) => {
               return (
                 <ul key={langIndex}>
                   <li>{language}</li>
                 </ul>
               );
             })}
-            <img src={search.flags.png} alt="country flag" />
+            <img src={search[0].flags.png} alt="country flag" />
           </div>
         );
       })
     ) : displaySearch.length > 10 ? (
       <p>Too many matches, specify another filter</p>
-    ) : (
-      displaySearch.map((display) => {
-        return (
-          <div>
-            <p>
-              {display.name.common} <button>show</button>
-            </p>
-          </div>
-        );
-      })
-    );
+    ) : displaySearch.map((country)=>
+    display.weather? <div>
+      <h1>{country.name.common}</h1>
+      <p>capital: {country.capital}</p>
+      <p>population: {country.population}</p>
+      {Object.keys(country.weather).map((key)=>}
+    </div> 
+    )
+      
+    
 
   return (
     <div className=" App">
@@ -103,3 +99,12 @@ const App = () => {
 };
 
 export default App;
+
+{/* <div>
+            <p>
+              {display.name.common}{" "}
+              <button onClick={() => fetchWeather(display.name.common)}>
+                show
+              </button>
+            </p>
+          </div> */}

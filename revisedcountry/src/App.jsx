@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import react from "react";
-// import "./styles.css";
+import React from "react";
 
-const App = () => {
+function App() {
   const [countries, setCountries] = useState([]);
   const [query, setQuery] = useState("");
 
@@ -16,7 +15,7 @@ const App = () => {
   const fetchWeather = (countryName) => {
     console.log({ countryName });
     axios(
-      `http://api.weatherstack.com/current?query=${countryName}&access_key=26e834681363492ae04791fa10f8b6b8`
+      `http://api.weatherstack.com/current?query=${countryName}&access_key=9ff407366ffaf22ba051c177ec28b087`
     )
       .then(({ data }) => {
         console.log(data.current);
@@ -49,7 +48,7 @@ const App = () => {
 
       fetchWeather(country.name.common);
     }
-  }, [countriesToShow]);
+  }, [query]);
 
   const output = !query ? (
     ""
@@ -78,11 +77,11 @@ const App = () => {
           <h1>{country.name.common}</h1>
           <p>Capital: {country.capital}</p>
           <p>Population: {country.population}</p>
-          {/* {Object.keys(country.weather).map((key) => (
+          {Object.keys(country.weather).map((key) => (
             <p key={`${country.flag}-${key}`}>
               {key}: {country.weather[key]}
             </p>
-          ))} */}
+          ))}
           <p>Temperature: {country.weather.temperature}</p>
           <h2>Languages</h2>
           <ul>
@@ -116,5 +115,6 @@ const App = () => {
       <div>{output}</div>
     </div>
   );
-};
+}
+
 export default App;
