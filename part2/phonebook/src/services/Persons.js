@@ -1,4 +1,5 @@
 import axios from "axios";
+// import person from './Persons'
 const baseurl = "http://localhost:3000/persons";
 
 const getall = () => {

@@ -2,34 +2,38 @@ import React, { useState, useEffect } from "react";
 import SearchFilter from "./components/SearchFilter";
 import PersonForm from "./components/PersonForm";
 import Person from "./components/Persons";
-import persons from "./db.json";
+import personsService from "./services/Persons";
+import axios from "axios";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
-  const [newName, setNewName] = useState("mufidat");
+  const [persons, setPersons] = useState([]);
+  const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [query, setQuary] = useState("");
-  // const [person, setPerson] = useState([]);
 
   const addName = (e) => {
     e.preventDefault();
-    const noteObject = {
+    const personObject = {
       name: newName,
-      id: persons.length + 1,
       number: newNumber,
+      //id is generated randomly by the server
     };
+
+    axios
+      .post("http://localhost:3002/persons", personObject)
+      .then((responce) => {
+        console.log(responce.data);
+        setPersons(persons.concat(responce.data));
+        setNewName("");
+        setNewNumber("");
+      });
 
     if (persons.find((person) => person.name === newName)) {
       alert(`${newName} is already added to phonebook`);
       setNewName("");
       return;
     }
-    setPersons(persons.concat(noteObject));
+    setPersons(persons.concat(personObject));
     setNewName("");
     setNewNumber("");
   };
@@ -43,19 +47,29 @@ const App = () => {
   const inputValue = (e) => {
     setNewName(e.target.value);
   };
+
   useEffect(() => {
-    console.log(persons);
-    // axios
-    //   .get("http://localhost:3001/persons")
-    //   .then((res) => {
-    //     // console.log(res.data);
-    //     setPerson(res.data);
-    //     console.log(person);
-    //   })
-    //   .catch((err) => {
-    //     console.log("Error!!", err);
-    //   });
+    axios
+      .get("http://localhost:3002/persons")
+      .then((res) => {
+        setPersons(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
   }, []);
+
+  // useEffect(() => {
+  //   personsService
+  //     .getall()
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       setPerson(res.data);
+  //       // console.log(person);
+  //     })
+  //     .catch((err) => {
+  //       console.log("Error!!", err);
+  //     });
+  // }, []);
 
   return (
     <div>
