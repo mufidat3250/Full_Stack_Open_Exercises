@@ -1,56 +1,18 @@
 import React, { useState, useEffect } from "react";
 import SearchFilter from "./components/SearchFilter";
 import PersonForm from "./components/PersonForm";
-import Person from "./components/Persons";
+import People from "./components/People";
 import personsService from "./services/Persons";
-import axios from "axios";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-  const [query, setQuary] = useState("");
-
-  const addName = (e) => {
-    e.preventDefault();
-    const personObject = {
-      name: newName,
-      number: newNumber,
-      //id is generated randomly by the server
-    };
-
-    axios
-      .post("http://localhost:3002/persons", personObject)
-      .then((responce) => {
-        console.log(responce.data);
-        setPersons(persons.concat(responce.data));
-        setNewName("");
-        setNewNumber("");
-      });
-
-    if (persons.find((person) => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`);
-      setNewName("");
-      return;
-    }
-    setPersons(persons.concat(personObject));
-    setNewName("");
-    setNewNumber("");
-  };
-
-  const search = (event) => {
-    setQuary(event.target.value);
-  };
-  const numberValue = (event) => {
-    setNewNumber(event.target.value);
-  };
-  const inputValue = (e) => {
-    setNewName(e.target.value);
-  };
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3002/persons")
+    personsService
+      .getall()
       .then((res) => {
         setPersons(res.data);
         console.log(res.data);
@@ -58,37 +20,67 @@ const App = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  // useEffect(() => {
-  //   personsService
-  //     .getall()
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setPerson(res.data);
-  //       // console.log(person);
-  //     })
-  //     .catch((err) => {
-  //       console.log("Error!!", err);
-  //     });
-  // }, []);
+  const addName = (e) => {
+    e.preventDefault();
+    if (!newName || !newNumber) {
+      return null;
+    }
+    const personObject = {
+      name: newName,
+      number: newNumber,
+      // id is generated
+    };
 
+    if (persons.find((person) => person.name === newName)) {
+      alert(`${newName} is already added to phonebook`);
+      setNewName("");
+      setNewNumber("");
+      return;
+    }
+
+    personsService.create(personObject).then((response) => {
+      console.log(response.data);
+      setPersons(persons.concat(response.data));
+      setNewName("");
+      setNewNumber("");
+    });
+  };
+
+  const computedPeople = query.trim()
+    ? persons.filter(
+        (person) =>
+          person.name.toLowerCase().includes(query) ||
+          String(person.number).includes(query)
+      )
+    : persons;
+
+  const deletePeople = (id) => {
+    personsService
+      .Delete(id)
+      .then((res) => setPersons(persons.filter((person) => person.id !== id)));
+  };
+  // console.log(persons.name);
   return (
     <div>
       <h2>Phonebook</h2>
-      <SearchFilter value={query} onchange={search} />
+      <SearchFilter
+        value={query}
+        onchange={(event) => setQuery(event.target.value)}
+      />
       <h3>add a new</h3>
 
       <PersonForm
-        // declearations
+        // declarations
         onsubmit={addName}
         newName={newName}
         newNumber={newNumber}
-        input1={inputValue}
-        input2={numberValue}
+        peoplesName={(e) => setNewName(e.target.value)}
+        peoplesContact={(e) => setNewNumber(e.target.value)}
       />
 
       <h2>Numbers</h2>
 
-      <Person person_s={persons} query_={query} />
+      <People people={computedPeople} deletePeople={deletePeople} />
     </div>
   );
 };

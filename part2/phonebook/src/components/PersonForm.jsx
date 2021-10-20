@@ -1,11 +1,17 @@
 import React from "react";
 
-function PersonForm({ onsubmit, newName, newNumber, input1, input2 }) {
+function PersonForm({
+  onsubmit,
+  newName,
+  newNumber,
+  peoplesName,
+  peoplesContact,
+}) {
   return (
     <form onSubmit={onsubmit}>
       <div className="inputField">
-        name: <input value={newName} onChange={input1} /> <br />
-        number: <input value={newNumber} onChange={input2} />
+        name: <input value={newName} onChange={peoplesName} /> <br />
+        number: <input value={newNumber} onChange={peoplesContact} />
       </div>
       <div>
         <button type="submit">add</button>
