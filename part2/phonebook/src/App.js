@@ -4,19 +4,19 @@ import PersonForm from "./components/PersonForm";
 import People from "./components/People";
 import PersonsService from "./services/Persons";
 
-// const Notifcation = ({ message }) => {
-//   if (message === null) {
-//     return null;
-//   }
-//   return <div className="error">{message}</div>;
-// };
+const Notifcation = ({ message }) => {
+  if (!message) {
+    return null;
+  }
+  return <div className="error">{message}</div>;
+};
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [query, setQuery] = useState("");
-  const [errorMessaage, setErrorMessage] = useState("some ");
+  const [errorMessaage, setErrorMessage] = useState("");
 
   useEffect(() => {
     PersonsService.getall().then((res) => {
@@ -61,20 +61,18 @@ const App = () => {
       setNewNumber("");
       setNewName("");
     } else {
-      console.log("strteddd");
       PersonsService.create(personObject).then((data) => {
         console.log(data);
         setPersons(persons.concat(data));
         setNewNumber("");
         setNewName("");
         //adding timer
-        // setErrorMessage(`${personObject.name} has being added succesfully`);
-        // setTimeout(() => {
-        //   setErrorMessage(null);
-        // }, 5000);
+        setErrorMessage(`${personObject.name} has being added succesfully`);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
       });
     }
-    console.log("closeddd");
   };
 
   //check if the id from the person is not equal to the id from the server
@@ -97,9 +95,7 @@ const App = () => {
   //sec method to use search feild
 
   const SearchField = persons.filter((person) => {
-    const currentPerson = { ...person };
-    // console.log({ Sperson: person }, String(currentPerson.name));
-    return String(currentPerson.name).toLowerCase().includes(query);
+    return String(person.name).toLowerCase().includes(query);
   });
   console.log({ SearchField });
 
@@ -107,7 +103,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      {/* <Notifcation message={errorMessaage} /> */}
+      <Notifcation message={errorMessaage} />
 
       <SearchFilter
         value={query}

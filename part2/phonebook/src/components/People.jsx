@@ -1,11 +1,9 @@
 import React from "react";
 
 function People({ persons, SearchField, deleteData }) {
-  console.log({ sss: SearchField });
   return (
     <div>
       {SearchField.map((person, personIndex) => {
-        console.log(person);
         const currentPerson = { ...person };
         return (
           <p key={personIndex}>
