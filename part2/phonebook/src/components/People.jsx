@@ -1,14 +1,27 @@
 import React from "react";
-import Note from "./Note";
 
-export default function People({ people, deletePeople }) {
+function People({ persons, SearchField, deleteData }) {
+  console.log({ sss: SearchField });
   return (
-    <ul>
-      {people.map((person) => {
+    <div>
+      {SearchField.map((person, personIndex) => {
+        console.log(person);
+        const currentPerson = { ...person };
         return (
-          <Note person={person} key={person.id} deletePeople={deletePeople} />
+          <p key={personIndex}>
+            {currentPerson.name} {currentPerson.number}{" "}
+            <button
+              onClick={() =>
+                window.confirm(`Delete ${person.name}`) && deleteData(person.id)
+              }
+            >
+              delete
+            </button>
+          </p>
         );
       })}
-    </ul>
+    </div>
   );
 }
+
+export default People;

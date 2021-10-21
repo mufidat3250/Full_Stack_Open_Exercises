@@ -1,22 +1,26 @@
 import React from "react";
 
 function PersonForm({
-  onsubmit,
-  newName,
-  newNumber,
-  peoplesName,
-  peoplesContact,
+  nameInput,
+  numberInput,
+  setNewName,
+  setNewNumber,
+  handleSubmit,
 }) {
   return (
-    <form onSubmit={onsubmit}>
-      <div className="inputField">
-        name: <input value={newName} onChange={peoplesName} /> <br />
-        number: <input value={newNumber} onChange={peoplesContact} />
-      </div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <div>
+          name: <input value={nameInput} onChange={setNewName} />
+        </div>
+        <div>
+          number: <input value={numberInput} onChange={setNewNumber} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+    </div>
   );
 }
 

@@ -1,9 +1,9 @@
 import React from "react";
 
-function SearchFilter({ value, onchange }) {
+function SearchFilter({ onChange, value }) {
   return (
     <div>
-      filter shown with <input value={value} onChange={onchange} />
+      filter shown with: <input value={value} onChange={onChange} />
     </div>
   );
 }
