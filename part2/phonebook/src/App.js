@@ -8,7 +8,23 @@ const Notifcation = ({ message }) => {
   if (!message) {
     return null;
   }
-  return <div className="error">{message}</div>;
+  return (
+    <div>
+      <div className="success">{message}</div>
+      {/* <div className="error">{message}</div> */}
+    </div>
+  );
+};
+
+const Notifcation2 = ({ message }) => {
+  if (!message) {
+    return null;
+  }
+  return (
+    <div>
+      <div className="error">{message}</div>
+    </div>
+  );
 };
 
 const App = () => {
@@ -17,6 +33,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [query, setQuery] = useState("");
   const [errorMessaage, setErrorMessage] = useState("");
+  const [deleteError, setDeleteError] = useState("");
 
   useEffect(() => {
     PersonsService.getall().then((res) => {
@@ -28,12 +45,22 @@ const App = () => {
     const newObject = { ...pers, number: obj.number };
 
     console.log(newObject);
-    PersonsService.Replace(pers.id, newObject).then((res) => {
-      console.log(res);
-      setPersons(
-        persons.map((person) => (person.id !== pers.id ? person : res))
-      );
-    });
+    PersonsService.Replace(pers.id, newObject)
+      .then((res) => {
+        console.log(res);
+        setPersons(
+          persons.map((person) => (person.id !== pers.id ? person : res))
+        );
+      })
+      .catch((err) => {
+        setPersons(persons.filter((person) => person.id !== pers.id));
+        setDeleteError(
+          `information of ${pers.name} has being deleted from server`
+        );
+        setTimeout(() => {
+          setDeleteError(null);
+        }, 5000);
+      });
   };
 
   const handleSubmit = (e) => {
@@ -104,6 +131,7 @@ const App = () => {
       <h2>Phonebook</h2>
 
       <Notifcation message={errorMessaage} />
+      <Notifcation2 message={deleteError} />
 
       <SearchFilter
         value={query}

@@ -1,44 +1,9 @@
 {
   "persons": [
     {
-      "name": "wewee",
-      "number": "2121",
-      "id": 9
-    },
-    {
-      "name": "mufi",
-      "number": "90",
-      "id": 10
-    },
-    {
-      "name": "tyyu",
-      "number": "ik",
-      "id": 11
-    },
-    {
-      "name": "rena",
-      "number": "555",
-      "id": 12
-    },
-    {
-      "name": "re",
-      "number": "3",
-      "id": 13
-    },
-    {
-      "name": "qqqq",
-      "number": "43",
-      "id": 14
-    },
-    {
-      "name": "ee",
-      "number": "ss",
-      "id": 15
-    },
-    {
-      "name": "bbbb",
-      "number": "8990",
-      "id": 16
+      "name": "wer",
+      "number": "21",
+      "id": 25
     }
   ]
 }
