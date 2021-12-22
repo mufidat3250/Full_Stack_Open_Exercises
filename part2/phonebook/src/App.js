@@ -32,8 +32,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [query, setQuery] = useState("");
-  const [errorMessaage, setErrorMessage] = useState("");
-  const [deleteError, setDeleteError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [Error, setError] = useState("");
 
   useEffect(() => {
     PersonsService.getall().then((res) => {
@@ -55,11 +55,9 @@ const App = () => {
       })
       .catch((err) => {
         setPersons(persons.filter((person) => person.id !== pers.id));
-        setDeleteError(
-          `information of ${pers.name} has being deleted from server`
-        );
+        setError(`information of ${pers.name} has being deleted from server`);
         setTimeout(() => {
-          setDeleteError(null);
+          setError(null);
         }, 5000);
       });
   };
@@ -92,13 +90,13 @@ const App = () => {
       PersonsService.create(personObject)
         .then((data) => {
           if (data.name.length < 3 || data.number.length < 8) {
-            setDeleteError(
+            setError(
               `Person validation failed: name: Path ${data.name} is shorter than the minimum allowed length(3)`
             );
             setNewNumber("");
             setNewName("");
             setTimeout(() => {
-              setDeleteError(null);
+              setError(null);
             }, 5000);
             return;
           }
@@ -106,9 +104,9 @@ const App = () => {
           setNewNumber("");
           setNewName("");
           //adding timer
-          setErrorMessage(`${personObject.name} has being added succesfully`);
+          setSuccess(`${personObject.name} has being added succesfully`);
           setTimeout(() => {
-            setErrorMessage(null);
+            setSuccess(null);
           }, 5000);
         })
         .catch((error) => {
@@ -145,8 +143,8 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <Notifcation message={errorMessaage} />
-      <Notifcation2 message={deleteError} />
+      <Notifcation message={success} />
+      <Notifcation2 message={Error} />
 
       <SearchFilter
         value={query}
