@@ -37,6 +37,7 @@ const App = () => {
 
   useEffect(() => {
     PersonsService.getall().then((res) => {
+      console.log(res);
       setPersons(res);
     });
   }, []);
@@ -88,17 +89,31 @@ const App = () => {
       setNewNumber("");
       setNewName("");
     } else {
-      PersonsService.create(personObject).then((data) => {
-        console.log(data);
-        setPersons(persons.concat(data));
-        setNewNumber("");
-        setNewName("");
-        //adding timer
-        setErrorMessage(`${personObject.name} has being added succesfully`);
-        setTimeout(() => {
-          setErrorMessage(null);
-        }, 5000);
-      });
+      PersonsService.create(personObject)
+        .then((data) => {
+          if (data.name.length < 3 || data.number.length < 8) {
+            setDeleteError(
+              `Person validation failed: name: Path ${data.name} is shorter than the minimum allowed length(3)`
+            );
+            setNewNumber("");
+            setNewName("");
+            setTimeout(() => {
+              setDeleteError(null);
+            }, 5000);
+            return;
+          }
+          setPersons(persons.concat(data));
+          setNewNumber("");
+          setNewName("");
+          //adding timer
+          setErrorMessage(`${personObject.name} has being added succesfully`);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
     }
   };
 
