@@ -84,8 +84,8 @@ const App = () => {
       <h1>{country.name.common}</h1>
       <p>capital: {country.capital}</p>
       <p>population: {country.population}</p>
-      {Object.keys(country.weather).map((key)=>}
-    </div> 
+      {Object.keys(country.weather).map((key)=><p>{key}</p>)}
+    </div> :''
     )
       
     

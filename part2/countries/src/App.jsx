@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Search from "./components/Search";
@@ -44,7 +51,9 @@ function App() {
 
         setWeatherData(data.current ? data.current : {});
       })
-      .catch(console.log);
+      .catch((err)=>console.log(err))
+        
+    
   };
   {
     console.log(weatherData);
