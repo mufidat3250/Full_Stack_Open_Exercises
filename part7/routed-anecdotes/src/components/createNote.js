@@ -1,21 +1,26 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { useField } from "../hooks";
 const CreateNew = (props) => {
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [info, setInfo] = useState("");
+  const content_ = useField("text");
+  const author_ = useField("text");
+  const info_ = useField("text");
+
+  const handleClick = () => {
+    content_.reset();
+    author_.reset();
+    info_.reset();
+  }
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     props.addNew({
-      content,
-      author,
-      info,
+      content: content_.value,
+      author: author_.value,
+      info: info_.value,
       votes: 0,
     });
-    setContent("");
-    setAuthor("");
-    setInfo("");
 
     navigate("/");
   };
@@ -27,27 +32,33 @@ const CreateNew = (props) => {
           content
           <input
             name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            type={content_.type}
+            value={content_.value}
+            onChange={content_.onChange}
           />
         </div>
         <div>
           author
           <input
             name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
+            type={author_.type}
+            value={author_.value}
+            onChange={author_.onChange}
           />
         </div>
         <div>
           url for more info
           <input
             name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
+            type={info_.type}
+            value={info_.value}
+            onChange={info_.onChange}
           />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
+        <button type="reset" onClick={() => handleClick()}>
+          reset
+        </button>
       </form>
     </div>
   );
