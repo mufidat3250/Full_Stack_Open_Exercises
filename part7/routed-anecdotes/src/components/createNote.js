@@ -11,7 +11,7 @@ const CreateNew = (props) => {
     content_.reset();
     author_.reset();
     info_.reset();
-  }
+  };
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
