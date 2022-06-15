@@ -7,7 +7,7 @@ const anecdotesAtStart = [
   "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
 ];
 
-const getId = () => (100000 * Math.random()).toFixed(0);
+ export const getId = () => (100000 * Math.random()).toFixed(0);
 
 const asObject = (anecdote) => {
   return {
@@ -17,28 +17,43 @@ const asObject = (anecdote) => {
   };
 };
 
-const initialState = anecdotesAtStart.map(asObject);
+
+export const addAnecdote = (content) => {
+  return {
+    type: "ADD ANECDOTE",
+    payload: {
+      content: content,
+      votes: 0,
+      id: getId(),
+    },
+  };
+};
+ export const vote = (id) => {
+  console.log(id, "invote");
+  return {
+    type: "VOTTING ANECDOTES",
+    data: id,
+  };
+};
+
+export const initialState = anecdotesAtStart.map(asObject);
 // console.log(initialState);
-const reducer = (state = initialState, action) => {
+ const reducer = (state = initialState, action) => {
   console.log(state);
   switch (action.type) {
-    case "VOTTING ANECDOTES":
-      {
-        let id = action.data;
-        let singleVote = state.find((anecdote, index) => {
-          // console.log(anecdote, "in reducer");
-          return anecdote.id === id;
-        });
-        let voteUpdate = { ...singleVote, votes:singleVote.votes + 1 };
-        console.log(singleVote);
-        console.log(voteUpdate, "voteupdate");
-        return state.map((anecdote, index) =>
-          anecdote.id === id ? voteUpdate : anecdote
-        );
-      }
-
-      break;
-
+    case "VOTTING ANECDOTES": {
+      let id = action.data;
+      let singleVote = state.find((anecdote, index) => anecdote.id === id);
+      let voteUpdate = { ...singleVote, votes: singleVote.votes + 1 };
+      console.log(singleVote);
+      console.log(voteUpdate, "voteupdate");
+      return state.map((anecdote, index) =>
+        anecdote.id === id ? voteUpdate : anecdote
+      );
+    }
+    case "ADD ANECDOTE": {
+      return [...state, action.payload];
+    }
     default:
       break;
   }
